@@ -5,5 +5,31 @@
     update_cache: yes
   with_items:
     - python-pip
-    - ruby2.0
+    - ruby
     - git
+- name: Install Packages | pip
+  pip:
+    state: latest
+    name: "{{ item }}"
+  with_items:
+    - awscli
+
+- name: Get Instance Metadata | ec2
+  action: ec2_facts
+
+- name: Get CodeDeploy | s3
+  get_url:
+    url: "https://aws-codedeploy-{{ ansible_ec2_placement_region }}.s3.amazonaws.com/latest/install"
+    dest: /tmp/codedeploy-install
+
+- name: Codedeploy Install Binary | Permission Executable
+  file:
+    state: file
+    path: /tmp/codedeploy-install
+    group: nginx
+    owner: nginx
+    mode: 0777
+
+- name: Codedeploy Install
+  become: true
+  command: /tmp/codedeploy-install auto
