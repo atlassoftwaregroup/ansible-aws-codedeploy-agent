@@ -1,0 +1,9 @@
+- name: Install Packages | apt
+  apt:
+    state: latest
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - python-pip
+    - ruby2.0
+    - git

@@ -1,14 +1,8 @@
 ---
-- name: Install Packages | apt
-  apt:
-    state: latest
-    name: "{{ item }}"
-    update_cache: yes
-  with_items:
-    - python-pip
-    - ruby2.0
-    - git
-
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
 - name: Install Packages | pip
   pip:
     state: latest
