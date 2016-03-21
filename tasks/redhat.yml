@@ -5,7 +5,6 @@
     update_cache: yes
   with_items:
     - python-pip
-    - ruby
     - git
 - name: Install Packages | pip
   pip:
